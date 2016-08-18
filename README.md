@@ -1,5 +1,7 @@
 # Spring Session JWT
 
+[![Build Status](https://travis-ci.org/ThomasBem/spring-session-jwt.svg?branch=master)](https://travis-ci.org/ThomasBem/spring-session-jwt)
+
 Integrates [Spring session](http://projects.spring.io/spring-session/) using [Redis](http://redis.io/) as session store, with [JWT](https://jwt.io/).  
 It is created to easily be used in combination with [auth0](https://auth0.com/).
 
@@ -21,7 +23,7 @@ repositories {
 
 ## Usage
 
-When the `spring.redis.host` property is empty, a local redis instance is configured and started with host `localhost` and port `6379`.
+When the `spring.redis.host` property is empty, a local redis instance is configured and started with `localhost` and port `6379`.
 See the class `LocalRedisConfig` for more detailed information.  
 
 ## Configuration

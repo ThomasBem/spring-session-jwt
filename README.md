@@ -8,7 +8,7 @@ It is created to easily be used in combination with [auth0](https://auth0.com/).
 Gradle
 ```
 compile('com.github.session.jwt:spring-session-jwt:0.0.1')
-compile('org.springframework.session:spring-session:1.2.1.RELEASE') // required if using spring boot gradle plugin
+compile('org.springframework.session:spring-session:1.2.1.RELEASE') // required with spring boot gradle plugin
 ```
 
 ```
@@ -22,7 +22,7 @@ repositories {
 ## Usage
 
 When the `spring.redis.host` property is empty, a local redis instance is configured and started with `localhost` and `6379`.
-See the class `LocalRedisConfig` for more detailed information.
+See the class `LocalRedisConfig` for more detailed information.  
 
 ## Configuration
 

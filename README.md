@@ -21,7 +21,7 @@ repositories {
 
 ## Usage
 
-When the `spring.redis.host` property is empty, a local redis instance is configured and started with `localhost` and `6379`.
+When the `spring.redis.host` property is empty, a local redis instance is configured and started with host `localhost` and port `6379`.
 See the class `LocalRedisConfig` for more detailed information.  
 
 ## Configuration

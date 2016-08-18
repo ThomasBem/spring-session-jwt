@@ -1,11 +1,14 @@
 # Spring Session JWT
 
-## Installation
+Integrates [Spring session](http://projects.spring.io/spring-session/) using [Redis](http://redis.io/) as session store, with [JWT](https://jwt.io/).  
+It is created to easily be used in combination with [auth0](https://auth0.com/).
 
+## Installation
 
 Gradle
 ```
 compile('com.github.session.jwt:spring-session-jwt:0.0.1')
+compile('org.springframework.session:spring-session:1.2.1.RELEASE') // required if using spring boot gradle plugin
 ```
 
 ```

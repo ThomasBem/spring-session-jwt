@@ -5,7 +5,7 @@
 
     <groupId>com.github.session.jwt</groupId>
     <artifactId>spring-session-jwt</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-session-jwt</name>
@@ -19,6 +19,9 @@
         <spring.version>1.3.5.RELEASE</spring.version>
         <spring-session.version>1.2.1.RELEASE</spring-session.version>
         <lombok.version>1.16.10</lombok.version>
+        <embedded-redis.version>0.6</embedded-redis.version>
+        <jjwt.version>0.6.0</jjwt.version>
+        <auth0-commons.version>0.1.0</auth0-commons.version>
 
         <cglib.version>3.2.2</cglib.version>
         <spock.version>1.0-groovy-2.4</spock.version>
@@ -29,6 +32,21 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.kstyrc</groupId>
+            <artifactId>embedded-redis</artifactId>
+            <version>${embedded-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>mvc-auth-commons</artifactId>
+            <version>${auth0-commons.version}</version>
         </dependency>
 
         <dependency>
@@ -127,5 +145,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-thomasbem-maven</id>
+            <name>thomasbem-maven</name>
+            <url>https://api.bintray.com/maven/thomasbem/maven/spring-session-jwt/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
 </project>

@@ -19,6 +19,8 @@ public class SpringSessionJwtConfig {
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieMaxAge(config.getCookieMaxAge());
+
         if (!StringUtils.isEmpty(config.getCookieDomain())) {
             serializer.setDomainName(config.getCookieDomain());
         }

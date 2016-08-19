@@ -22,4 +22,7 @@ public class ConfigService {
 
     @Value("${cookie-domain:}")
     private String cookieDomain;
+
+    @Value("${cookie-max-age:36000}")
+    private int cookieMaxAge;
 }

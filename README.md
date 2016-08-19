@@ -35,3 +35,4 @@ See the class `LocalRedisConfig` for more detailed information.
 | jwt-secret | Secret used to verify JWT (from auth0) | |
 | jwt-session-key | The key used to store the jwt in the session | jwt |
 | cookie-domain | The domain set for the generated cookies | |
+| cookie-max-age | The max age in seconds? for the cookie | 36000 |

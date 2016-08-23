@@ -67,7 +67,8 @@ public class RequestUtil {
             String jwt = (String) httpSession.getAttribute(config.getJwtSessionKey());
             return validateToken(jwt) ? Optional.of(jwt) : Optional.empty();
         } catch(IllegalStateException e) {
-            log.warn("Unable to get attribute from session, skipping jwt token", e);
+            log.warn("Unable to get attribute from session, skipping jwt token");
+            log.warn(e.getMessage());
             return Optional.empty();
         }
     }

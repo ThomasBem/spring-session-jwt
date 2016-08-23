@@ -1,6 +1,6 @@
 package com.github.session.jwt;
 
-import com.github.session.jwt.config.ConfigService;
+import com.github.session.jwt.config.SpringSessionConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class SpringSessionJwt {
 
     @Autowired
-    private ConfigService config;
+    private SpringSessionConfig config;
 
     @Autowired
     private HttpSession httpSession;

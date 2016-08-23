@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Getter
 @Service
-public class ConfigService {
+public class SpringSessionConfig {
 
     @Value("${basic-auth.username:}")
     private String username;

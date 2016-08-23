@@ -1,6 +1,6 @@
 package com.github.session.jwt
 
-import com.github.session.jwt.config.ConfigService
+import com.github.session.jwt.config.SpringSessionConfig
 import io.jsonwebtoken.JwtException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -12,11 +12,11 @@ import javax.servlet.http.HttpSession
 class SpringSessionJwtSpec extends Specification {
     private SpringSessionJwt springSessionJwt
     private HttpSession httpSession
-    private ConfigService config
+    private SpringSessionConfig config
 
     void setup() {
         httpSession = Mock(HttpSession)
-        config = Mock(ConfigService)
+        config = Mock(SpringSessionConfig)
         springSessionJwt = new SpringSessionJwt(httpSession: httpSession, config: config)
     }
 

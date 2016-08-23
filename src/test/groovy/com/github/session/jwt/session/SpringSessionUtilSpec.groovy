@@ -1,7 +1,7 @@
 package com.github.session.jwt.session
 
 import com.auth0.Tokens
-import com.github.session.jwt.config.ConfigService
+import com.github.session.jwt.config.SpringSessionConfig
 import io.jsonwebtoken.JwtException
 import spock.lang.Specification
 
@@ -9,12 +9,12 @@ import javax.servlet.http.HttpSession
 
 class SpringSessionUtilSpec extends Specification {
     private HttpSession httpSession
-    private ConfigService config
+    private SpringSessionConfig config
     private SpringSessionUtil springSessionUtil
 
     void setup() {
         httpSession = Mock(HttpSession)
-        config = Mock(ConfigService)
+        config = Mock(SpringSessionConfig)
         springSessionUtil = new SpringSessionUtil(httpSession: httpSession, config: config)
     }
 

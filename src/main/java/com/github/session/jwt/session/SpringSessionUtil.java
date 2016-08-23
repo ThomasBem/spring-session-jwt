@@ -2,7 +2,7 @@ package com.github.session.jwt.session;
 
 import com.auth0.SessionUtils;
 import com.auth0.Tokens;
-import com.github.session.jwt.config.ConfigService;
+import com.github.session.jwt.config.SpringSessionConfig;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class SpringSessionUtil {
 
     @Autowired
-    private ConfigService config;
+    private SpringSessionConfig config;
 
     @Autowired
     private HttpSession httpSession;

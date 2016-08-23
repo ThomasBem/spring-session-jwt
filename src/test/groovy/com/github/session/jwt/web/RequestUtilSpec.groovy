@@ -1,6 +1,6 @@
 package com.github.session.jwt.web
 
-import com.github.session.jwt.config.ConfigService
+import com.github.session.jwt.config.SpringSessionConfig
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -13,12 +13,12 @@ import javax.servlet.http.HttpSession
 class RequestUtilSpec extends Specification {
     private RequestUtil requestUtil
     private RestTemplate restTemplate
-    private ConfigService config
+    private SpringSessionConfig config
     private HttpSession session
 
     void setup() {
         restTemplate = Mock(RestTemplate)
-        config = Mock(ConfigService)
+        config = Mock(SpringSessionConfig)
         session = Mock(HttpSession)
 
         requestUtil = new RequestUtil(restTemplate: restTemplate, httpSession: session, config: config)

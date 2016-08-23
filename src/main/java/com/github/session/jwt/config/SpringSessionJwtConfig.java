@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 public class SpringSessionJwtConfig {
 
     @Autowired
-    private ConfigService config;
+    private SpringSessionConfig config;
 
     @Bean
     public CookieSerializer cookieSerializer() {

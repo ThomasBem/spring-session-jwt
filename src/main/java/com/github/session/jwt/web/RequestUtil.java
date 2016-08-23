@@ -1,6 +1,6 @@
 package com.github.session.jwt.web;
 
-import com.github.session.jwt.config.ConfigService;
+import com.github.session.jwt.config.SpringSessionConfig;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class RequestUtil {
 
     @Autowired
-    private ConfigService config;
+    private SpringSessionConfig config;
 
     @Autowired
     private RestTemplate restTemplate;

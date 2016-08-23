@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -43,9 +44,9 @@ public class RequestUtil {
 
     private HttpEntity createRequestEntity() {
         HttpHeaders header = createAuthorizationHeader();
-        String jwtToken = getTokenFromSession();
-        if (!StringUtils.isEmpty(jwtToken)) {
-            header.add("jwt", jwtToken);
+        Optional<String> jwtToken = getTokenFromSession();
+        if (jwtToken.isPresent()) {
+            header.add("jwt", jwtToken.get());
         }
         return new HttpEntity<>(null, header);
     }
@@ -61,9 +62,14 @@ public class RequestUtil {
         return header;
     }
 
-    String getTokenFromSession() {
-        String jwt = (String) httpSession.getAttribute(config.getJwtSessionKey());
-        return validateToken(jwt) ? jwt : null;
+    Optional<String> getTokenFromSession() {
+        try {
+            String jwt = (String) httpSession.getAttribute(config.getJwtSessionKey());
+            return validateToken(jwt) ? Optional.of(jwt) : Optional.empty();
+        } catch(IllegalStateException e) {
+            log.warn("Unable to get attribute from session, skipping jwt token", e);
+            return Optional.empty();
+        }
     }
 
     private boolean validateToken(String jwt) {

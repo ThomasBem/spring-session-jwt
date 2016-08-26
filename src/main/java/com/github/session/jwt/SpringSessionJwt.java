@@ -1,6 +1,7 @@
 package com.github.session.jwt;
 
 import com.github.session.jwt.config.SpringSessionConfig;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+@EnableEncryptableProperties
 @EnableRedisHttpSession
 @Component
 public class SpringSessionJwt {

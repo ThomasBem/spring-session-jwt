@@ -5,7 +5,7 @@
 
     <groupId>com.github.session.jwt</groupId>
     <artifactId>spring-session-jwt</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-session-jwt</name>
@@ -27,6 +27,8 @@
         <embedded-redis.version>0.6</embedded-redis.version>
         <jjwt.version>0.6.0</jjwt.version>
         <auth0-commons.version>0.1.0</auth0-commons.version>
+        <jasypt.version>1.7</jasypt.version>
+        <jsonpath.version>2.2.0</jsonpath.version>
 
         <cglib.version>3.2.2</cglib.version>
         <spock.version>1.0-groovy-2.4</spock.version>
@@ -42,6 +44,16 @@
             <groupId>com.github.kstyrc</groupId>
             <artifactId>embedded-redis</artifactId>
             <version>${embedded-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${jasypt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${jsonpath.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

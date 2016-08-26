@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
@@ -20,6 +21,7 @@ import java.util.Map;
 @EnableEncryptableProperties
 @EnableRedisHttpSession
 @Component
+@Slf4j
 public class SpringSessionJwt {
 
     @Autowired
@@ -54,6 +56,16 @@ public class SpringSessionJwt {
         });
 
         return values;
+    }
+
+    public boolean isValidJWT() {
+        try {
+            get();
+            return true;
+        } catch(JwtException e) {
+            log.warn("JWT is not valid", e);
+            return false;
+        }
     }
 
 }

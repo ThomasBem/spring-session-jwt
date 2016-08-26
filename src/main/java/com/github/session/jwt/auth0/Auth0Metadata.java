@@ -47,4 +47,14 @@ public class Auth0Metadata {
 
         return Collections.emptyList();
     }
+
+    public boolean isAuthorized(String appName) {
+        List<Permission> permissions = getPermissions();
+        if (permissions.size() == 0) {
+            return false;
+        }
+
+        Optional<Permission> permissionAppName = permissions.stream().filter(permission -> permission.getApp().toLowerCase().equals(appName)).findFirst();
+        return permissionAppName.isPresent();
+    }
 }

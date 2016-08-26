@@ -44,4 +44,33 @@ class Auth0MetadataSpec extends Specification {
         1 * springSessionJwt.get() >> metadata
         permissions.size() == 0
     }
+
+    def "Is authorized for application"() {
+        when:
+        def authorized = auth0Metadata.isAuthorized("assettracker")
+
+        then:
+        authorized
+    }
+
+    def "Is not authorized for application"() {
+        when:
+        def authorized = auth0Metadata.isAuthorized("test-app")
+
+        then:
+        !authorized
+    }
+
+    def "Is not authorized when no permissions are configured"() {
+        given:
+        def metadata = new HashMap()
+        metadata.put("app_metadata", "")
+
+        when:
+        def authorized = auth0Metadata.isAuthorized("assettracker")
+
+        then:
+        1 * springSessionJwt.get() >> metadata
+        !authorized
+    }
 }

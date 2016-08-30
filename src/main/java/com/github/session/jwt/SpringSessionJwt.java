@@ -8,7 +8,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
@@ -17,6 +16,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @EnableEncryptableProperties
 @EnableRedisHttpSession
@@ -28,20 +28,15 @@ public class SpringSessionJwt {
     private SpringSessionConfig config;
 
     @Autowired
-    private HttpSession httpSession;
+    private HttpSession session;
 
     public Map<String, String> get() {
-        String jwt = (String) httpSession.getAttribute(config.getJwtSessionKey());
+        String jwt = (String) session.getAttribute(config.getJwtSessionKey());
         if (StringUtils.isEmpty(jwt)) {
             throw new JwtException("No jwt on session (session-key: " + config.getJwtSessionKey() + ")");
         } else {
             return get(jwt);
         }
-    }
-
-    public Map<String, String> get(ResponseEntity<?> response) {
-        String jwt = response.getHeaders().getFirst(config.getJwtSessionKey());
-        return get(jwt);
     }
 
     public Map<String, String> get(String jwt) {
@@ -58,14 +53,24 @@ public class SpringSessionJwt {
         return values;
     }
 
-    public boolean isValidJWT() {
-        try {
-            get();
-            return true;
-        } catch(JwtException e) {
-            log.warn("JWT is not valid", e);
-            return false;
+    public Optional<String> getJwt() {
+        Object jwt = session.getAttribute(config.getJwtSessionKey());
+        if (jwt != null) {
+            try {
+                String jwtString = (String) jwt;
+                byte[] key = Base64Utils.decodeFromUrlSafeString(config.getJwtSecret());
+                Jwts.parser().setSigningKey(key).parse(jwtString);
+                return Optional.of((String) jwt);
+            } catch (JwtException e) {
+                log.warn("JWT is not valid", e);
+            }
         }
+
+        return Optional.empty();
     }
 
+    public boolean isValidJwt() {
+        Optional<String> jwt = getJwt();
+        return jwt.isPresent();
+    }
 }

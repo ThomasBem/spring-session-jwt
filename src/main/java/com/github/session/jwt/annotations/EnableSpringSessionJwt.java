@@ -1,5 +1,6 @@
 package com.github.session.jwt.annotations;
 
+import com.github.session.jwt.config.LocalRedisConfig;
 import com.github.session.jwt.config.SpringSessionJwtConfig;
 import org.springframework.context.annotation.Import;
 
@@ -10,6 +11,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(SpringSessionJwtConfig.class)
+@Import({SpringSessionJwtConfig.class, LocalRedisConfig.class})
 public @interface EnableSpringSessionJwt {
 }

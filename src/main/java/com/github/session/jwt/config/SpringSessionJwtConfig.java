@@ -1,28 +1,44 @@
 package com.github.session.jwt.config;
 
 import com.github.session.jwt.SpringSessionJwt;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.session.jwt.auth0.Auth0Metadata;
+import com.github.session.jwt.web.RequestUtil;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.util.StringUtils;
 
-@ComponentScan(basePackageClasses = SpringSessionJwt.class)
 @Configuration
 public class SpringSessionJwtConfig {
 
-    @Autowired
-    private SpringSessionConfig config;
+    @Bean
+    public SpringSessionConfig springSessionConfig() {
+        return new SpringSessionConfig();
+    }
+
+    @Bean
+    public Auth0Metadata auth0Metadata() {
+        return new Auth0Metadata();
+    }
+
+    @Bean
+    public RequestUtil requestUtil() {
+        return new RequestUtil();
+    }
+
+    @Bean
+    public SpringSessionJwt springSessionJwt() {
+        return new SpringSessionJwt();
+    }
 
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieMaxAge(config.getCookieMaxAge());
+        serializer.setCookieMaxAge(springSessionConfig().getCookieMaxAge());
 
-        if (!StringUtils.isEmpty(config.getCookieDomain())) {
-            serializer.setDomainName(config.getCookieDomain());
+        if (!StringUtils.isEmpty(springSessionConfig().getCookieDomain())) {
+            serializer.setDomainName(springSessionConfig().getCookieDomain());
         }
         return serializer;
     }

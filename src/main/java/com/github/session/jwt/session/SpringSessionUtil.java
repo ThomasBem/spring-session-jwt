@@ -19,7 +19,7 @@ public class SpringSessionUtil {
     @Autowired
     private HttpSession httpSession;
 
-    public void addJWT() {
+    public void addJwt() {
         Tokens tokens = (Tokens) httpSession.getAttribute(SessionUtils.TOKENS);
         if (tokens == null || StringUtils.isEmpty(tokens.getIdToken())) {
             throw new JwtException("No token stored in session");

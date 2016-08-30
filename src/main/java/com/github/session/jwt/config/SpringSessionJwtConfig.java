@@ -2,6 +2,7 @@ package com.github.session.jwt.config;
 
 import com.github.session.jwt.SpringSessionJwt;
 import com.github.session.jwt.auth0.Auth0Metadata;
+import com.github.session.jwt.session.SpringSessionUtil;
 import com.github.session.jwt.web.RequestUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,11 @@ public class SpringSessionJwtConfig {
     @Bean
     public SpringSessionJwt springSessionJwt() {
         return new SpringSessionJwt();
+    }
+
+    @Bean
+    public SpringSessionUtil springSessionUtil(){
+        return new SpringSessionUtil();
     }
 
     @Bean

@@ -20,7 +20,7 @@ class SpringSessionUtilSpec extends Specification {
 
     def "Missing Tokens in session"(){
         when:
-        springSessionUtil.addJWT()
+        springSessionUtil.addJwt()
 
         then:
         thrown(JwtException)
@@ -28,7 +28,7 @@ class SpringSessionUtilSpec extends Specification {
 
     def "add JWT to session"(){
         when:
-        springSessionUtil.addJWT()
+        springSessionUtil.addJwt()
 
         then:
         1 * httpSession.getAttribute(_ as String) >> new Tokens("idToken", "", "", "")

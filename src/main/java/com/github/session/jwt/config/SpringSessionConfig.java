@@ -17,7 +17,7 @@ public class SpringSessionConfig {
     @Value("${jwt-secret:}")
     private String jwtSecret;
 
-    @Value("${jwt-session-key:jwt}")
+    @Value("${jwt-key:jwt}")
     private String jwtSessionKey;
 
     @Value("${cookie-domain:}")

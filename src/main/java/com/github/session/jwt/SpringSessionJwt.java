@@ -92,7 +92,7 @@ public class SpringSessionJwt {
     private boolean validIssuer(String jwt, Jws<Claims> jwtClaims) {
         String issuer = jwtClaims.getBody().get(CLAIM_ISSUER, String.class);
         if (!StringUtils.isEmpty(issuer) && issuer.equals(config.getIssuer())) {
-            log.warn("JWT issuer is not valid, jwt: {}", jwt);
+            log.warn("JWT issuer is not valid, issuer: {} - jwt: {}", config.getIssuer(), jwt);
             return true;
         } else {
             return false;

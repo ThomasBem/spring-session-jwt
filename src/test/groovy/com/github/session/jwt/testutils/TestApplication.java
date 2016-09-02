@@ -3,9 +3,11 @@ package com.github.session.jwt.testutils;
 import com.github.session.jwt.annotations.EnableSpringSessionJwt;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @EnableSpringSessionJwt
@@ -20,5 +22,10 @@ public class TestApplication {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public HttpServletRequest httpServletRequest() {
+        return new MockHttpServletRequest();
     }
 }

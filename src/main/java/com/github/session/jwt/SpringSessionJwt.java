@@ -8,11 +8,14 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +32,9 @@ public class SpringSessionJwt {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private HttpServletRequest request;
 
     public Map<String, String> get() {
         String jwt = (String) session.getAttribute(config.getJwtSessionKey());
@@ -54,19 +60,45 @@ public class SpringSessionJwt {
     }
 
     public Optional<String> getJwt() {
-        Object jwt = session.getAttribute(config.getJwtSessionKey());
-        if (jwt != null) {
-            try {
-                String jwtString = (String) jwt;
-                byte[] key = Base64Utils.decodeFromUrlSafeString(config.getJwtSecret());
-                Jwts.parser().setSigningKey(key).parse(jwtString);
-                return Optional.of((String) jwt);
-            } catch (JwtException e) {
-                log.warn("JWT is not valid", e);
-            }
+        String jwt = getJwtString();
+        if (validateJwt(jwt)) {
+            return Optional.of(jwt);
         }
 
         return Optional.empty();
+    }
+
+    private boolean validateJwt(String jwt) {
+        if (jwt == null) {
+            return false;
+        }
+
+        try {
+            byte[] key = Base64Utils.decodeFromUrlSafeString(config.getJwtSecret());
+            Jwts.parser().setSigningKey(key).parse(jwt);
+            return true;
+        } catch (JwtException e) {
+            log.warn("JWT is not valid", e);
+        }
+        return false;
+    }
+
+    private String getJwtString() {
+        Object jwtObject = session.getAttribute(config.getJwtSessionKey());
+        if (jwtObject == null) {
+            return getJwtFromHeader();
+        } else {
+            return (String) jwtObject;
+        }
+    }
+
+    private String getJwtFromHeader() {
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        if (acceptHeader != null && acceptHeader.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
+            return request.getHeader(config.getJwtSessionKey());
+        }
+
+        return null;
     }
 
     public boolean isValidJwt() {

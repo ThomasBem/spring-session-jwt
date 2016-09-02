@@ -9,7 +9,7 @@ It is created to easily be used in combination with [auth0](https://auth0.com/).
 
 Gradle
 ```
-compile('com.github.session.jwt:spring-session-jwt:0.0.17')
+compile('com.github.session.jwt:spring-session-jwt:0.0.18')
 compile('org.springframework.session:spring-session:1.2.1.RELEASE') // required with spring boot gradle plugin
 ```
 

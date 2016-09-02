@@ -40,7 +40,7 @@ class SpringSessionJwtSpec extends Specification {
         then:
         1 * config.getJwtSessionKey() >> "jwt"
         1 * httpSession.getAttribute(_ as String) >> "eyJhbGciOiJIUzI1NiJ9.eyJ0ZXN0LWtleSI6InRlc3QtdmFsdWUifQ.ytAJ6xW-b7gNJdB49Sqfg7tZDSZORKkLBropODtda0k"
-        1 * config.jwtSecret >> Base64Utils.encodeToUrlSafeString("test-key".bytes)
+        2 * config.jwtSecret >> Base64Utils.encodeToUrlSafeString("test-key".bytes)
         claims.size() == 1
         claims.keySet().first() == "test-key"
     }

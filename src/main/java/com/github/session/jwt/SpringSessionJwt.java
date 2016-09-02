@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,11 +36,11 @@ public class SpringSessionJwt {
     private HttpServletRequest request;
 
     public Map<String, String> get() {
-        String jwt = (String) session.getAttribute(config.getJwtSessionKey());
-        if (StringUtils.isEmpty(jwt)) {
-            throw new JwtException("No jwt on session (session-key: " + config.getJwtSessionKey() + ")");
+        Optional<String> jwt = getJwt();
+        if (jwt.isPresent()) {
+            return get(jwt.get());
         } else {
-            return get(jwt);
+            throw new JwtException("No jwt on session (session-key: " + config.getJwtSessionKey() + ")");
         }
     }
 

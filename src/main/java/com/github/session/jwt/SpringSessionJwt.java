@@ -17,9 +17,9 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -92,9 +92,9 @@ public class SpringSessionJwt {
     private boolean validIssuer(String jwt, Jws<Claims> jwtClaims) {
         String issuer = jwtClaims.getBody().get(CLAIM_ISSUER, String.class);
         if (!StringUtils.isEmpty(issuer) && issuer.equals(config.getIssuer())) {
-            log.warn("JWT issuer is not valid, configured issuer: {} - issuer from token: {} - jwt: {}", config.getIssuer(), issuer, jwt);
             return true;
         } else {
+            log.warn("JWT issuer is not valid, configured issuer: {} - issuer from token: {} - jwt: {}", config.getIssuer(), issuer, jwt);
             return false;
         }
     }
@@ -102,7 +102,7 @@ public class SpringSessionJwt {
     private boolean validExpiration(String jwt, Jws<Claims> jwtClaims) {
         Claims claims = jwtClaims.getBody();
         if (claims.containsKey(CLAIM_EXPIRATION)) {
-            Integer expiration = claims.get(CLAIM_EXPIRATION, Integer.class);
+            Date expiration = claims.get(CLAIM_EXPIRATION, Date.class);
             if (expirationDatePassed(expiration)) {
                 log.warn("JWT expiration date has passed, expiration: {} - jwt: {}", expiration, jwt);
                 return false;
@@ -111,8 +111,8 @@ public class SpringSessionJwt {
         return true;
     }
 
-    boolean expirationDatePassed(Integer expiration) {
-        LocalDateTime jwtExpirationDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(expiration), ZoneId.systemDefault());
+    boolean expirationDatePassed(Date expiration) {
+        LocalDateTime jwtExpirationDate = LocalDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault());
         return jwtExpirationDate.isBefore(LocalDateTime.now());
     }
 

@@ -9,6 +9,8 @@ import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class SpringSessionJwtSpec extends Specification {
     private String tokenString = "eyJhbGciOiJIUzI1NiJ9.eyJ0ZXN0LWtleSI6InRlc3QtdmFsdWUiLCJpc3MiOiJ0ZXN0LWlzc3VlciJ9.TMyOCKI9q15qELmFNU4GEnQhQnvPo7uxeUV1tJ1W7L0"
@@ -83,8 +85,11 @@ class SpringSessionJwtSpec extends Specification {
     }
 
     def "Expiration date has passed"() {
+        given:
+        def date = Date.from(LocalDateTime.of(2016, 6, 1, 0, 0).atZone(ZoneId.systemDefault()).toInstant())
+
         when:
-        def passed = springSessionJwt.expirationDatePassed(1472747771)
+        def passed = springSessionJwt.expirationDatePassed(date)
 
         then:
         passed
@@ -95,7 +100,7 @@ class SpringSessionJwtSpec extends Specification {
         def jwt = springSessionJwt.getJwt()
 
         then:
-        1 * config.getIssuer() >> ""
+        2 * config.getIssuer() >> ""
         1 * config.getJwtSessionKey() >> "test-key"
         1 * httpSession.getAttribute(_ as String) >> tokenString
         1 * config.getJwtSecret() >> Base64Utils.encodeToUrlSafeString("test-key".bytes)

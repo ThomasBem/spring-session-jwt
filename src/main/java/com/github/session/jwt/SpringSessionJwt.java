@@ -13,9 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -25,6 +29,9 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class SpringSessionJwt {
+
+    private static final String CLAIM_EXPIRATION = "exp";
+    private static final String CLAIM_ISSUER = "iss";
 
     @Autowired
     private SpringSessionConfig config;
@@ -74,12 +81,39 @@ public class SpringSessionJwt {
 
         try {
             byte[] key = Base64Utils.decodeFromUrlSafeString(config.getJwtSecret());
-            Jwts.parser().setSigningKey(key).parse(jwt);
-            return true;
+            Jws<Claims> jwtClaims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt);
+            return validIssuer(jwt, jwtClaims) && validExpiration(jwt, jwtClaims);
         } catch (JwtException e) {
             log.warn("JWT is not valid", e);
         }
         return false;
+    }
+
+    private boolean validIssuer(String jwt, Jws<Claims> jwtClaims) {
+        String issuer = jwtClaims.getBody().get(CLAIM_ISSUER, String.class);
+        if (!StringUtils.isEmpty(issuer) && issuer.equals(config.getIssuer())) {
+            log.warn("JWT issuer is not valid, jwt: {}", jwt);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean validExpiration(String jwt, Jws<Claims> jwtClaims) {
+        Claims claims = jwtClaims.getBody();
+        if (claims.containsKey(CLAIM_EXPIRATION)) {
+            Integer expiration = claims.get(CLAIM_EXPIRATION, Integer.class);
+            if (expirationDatePassed(expiration)) {
+                log.warn("JWT expiration date has passed, jwt: {}", jwt);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    boolean expirationDatePassed(Integer expiration) {
+        LocalDateTime jwtExpirationDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(expiration), ZoneId.systemDefault());
+        return jwtExpirationDate.isBefore(LocalDateTime.now());
     }
 
     private String getJwtString() {

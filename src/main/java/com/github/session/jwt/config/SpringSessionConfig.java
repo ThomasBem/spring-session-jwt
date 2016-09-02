@@ -25,4 +25,8 @@ public class SpringSessionConfig {
 
     @Value("${cookie-max-age:36000}")
     private int cookieMaxAge;
+
+    @Value("${jwt-issuer:}")
+    private String issuer;
+
 }

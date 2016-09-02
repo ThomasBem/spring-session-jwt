@@ -9,7 +9,7 @@ It is created to easily be used in combination with [auth0](https://auth0.com/).
 
 Gradle
 ```
-compile('com.github.session.jwt:spring-session-jwt:0.0.13')
+compile('com.github.session.jwt:spring-session-jwt:0.0.14')
 compile('org.springframework.session:spring-session:1.2.1.RELEASE') // required with spring boot gradle plugin
 ```
 
@@ -36,3 +36,4 @@ See the class `LocalRedisConfig` for more detailed information.
 | jwt-session-key | The key used to store the jwt in the session | jwt |
 | cookie-domain | The domain set for the generated cookies | |
 | cookie-max-age | The max age in seconds? for the cookie | 36000 |
+| jwt-issuer | The issuer of the JWT used to validate | |

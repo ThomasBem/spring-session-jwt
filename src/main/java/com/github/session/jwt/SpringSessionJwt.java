@@ -92,7 +92,7 @@ public class SpringSessionJwt {
     private boolean validIssuer(String jwt, Jws<Claims> jwtClaims) {
         String issuer = jwtClaims.getBody().get(CLAIM_ISSUER, String.class);
         if (!StringUtils.isEmpty(issuer) && issuer.equals(config.getIssuer())) {
-            log.warn("JWT issuer is not valid, issuer: {} - jwt: {}", config.getIssuer(), jwt);
+            log.warn("JWT issuer is not valid, configured issuer: {} - issuer from token: {} - jwt: {}", config.getIssuer(), issuer, jwt);
             return true;
         } else {
             return false;
@@ -104,7 +104,7 @@ public class SpringSessionJwt {
         if (claims.containsKey(CLAIM_EXPIRATION)) {
             Integer expiration = claims.get(CLAIM_EXPIRATION, Integer.class);
             if (expirationDatePassed(expiration)) {
-                log.warn("JWT expiration date has passed, jwt: {}", jwt);
+                log.warn("JWT expiration date has passed, expiration: {} - jwt: {}", expiration, jwt);
                 return false;
             }
         }

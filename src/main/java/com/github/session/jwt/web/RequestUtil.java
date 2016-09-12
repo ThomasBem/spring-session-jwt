@@ -34,7 +34,8 @@ public class RequestUtil {
 
     public <T> ResponseEntity<T> get(String url, Class<T> responseType) {
         try {
-            return restTemplate.exchange(url, HttpMethod.GET, createRequestEntity(), responseType);
+            ResponseEntity<T> responseEntity = restTemplate.exchange(url, HttpMethod.GET, createRequestEntity(), responseType);
+            return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
         } catch (HttpClientErrorException e) {
             log.warn("Http client error, url:{} status-code:{} message:{}", url, e.getStatusCode(), e.getMessage());
             return new ResponseEntity<>(e.getStatusCode());

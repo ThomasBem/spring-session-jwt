@@ -5,9 +5,6 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Permission {
-    private String app;
-    private String role;
-    private String company;
-    private String organisation;
+public class Environment {
+    private String name;
 }

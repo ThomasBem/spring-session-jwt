@@ -9,7 +9,7 @@ class Auth0MetadataSpec extends Specification {
 
     void setup() {
         def metadata = new HashMap()
-        metadata.put("app_metadata", "{permissions=[{app=assettracker, role=USER, company=FMC, organisation=WAS}, {app=well-life, role=USER, company=FMC, organisation=WAS}, {app=sds, role=USER, company=FMC, organisation=WAS}, {app=frm, role=USER, company=FMC, organisation=WAS}], roles=[ROLE_USER]}")
+        metadata.put("app_metadata", "{roles=[USER_ROLE], applications=[{name=my-app1, environments=[{name=development, claims={role=user, company=my-company1, organisation=my-org1}}, {name=demo, claims={role=user, company=my-company1, organisation=my-org1}}, {name=production, claims={role=user, company=my-company1, organisation=my-org1}}]}, {name=my-app2, environments=[{name=development, claims={role=user, company=my-company2, organisation=my-org2}}, {name=demo, claims={role=user, company=my-company2, organisation=my-org2}}, {name=production, claims={role=user, company=my-company2, organisation=my-org2}}]}]}")
         springSessionJwt = Mock(SpringSessionJwt) {
             get() >> metadata
         }
@@ -24,38 +24,38 @@ class Auth0MetadataSpec extends Specification {
         metadata.isPresent()
     }
 
-    def "Get permissions"() {
+    def "Get applications"() {
         when:
-        def permissions = auth0Metadata.getPermissions()
+        def applications = auth0Metadata.getApplications()
 
         then:
-        permissions.size() == 4
+        applications.size() == 2
     }
 
-    def "Get permissions when metadata is empty"() {
+    def "Get empty list when metadata is empty"() {
         given:
         def metadata = new HashMap()
         metadata.put("app_metadata", "")
 
         when:
-        def permissions = auth0Metadata.getPermissions()
+        def applications = auth0Metadata.getApplications()
 
         then:
         1 * springSessionJwt.get() >> metadata
-        permissions.size() == 0
+        applications.size() == 0
     }
 
-    def "Is authorized for application"() {
+    def "Is authorized"() {
         when:
-        def authorized = auth0Metadata.isAuthorized("assettracker")
+        def authorized = auth0Metadata.isAuthorized("my-app1", "development")
 
         then:
         authorized
     }
 
-    def "Is not authorized for application"() {
+    def "Is not authorized"() {
         when:
-        def authorized = auth0Metadata.isAuthorized("test-app")
+        def authorized = auth0Metadata.isAuthorized("test-app", "demo")
 
         then:
         !authorized
@@ -67,7 +67,7 @@ class Auth0MetadataSpec extends Specification {
         metadata.put("app_metadata", "")
 
         when:
-        def authorized = auth0Metadata.isAuthorized("assettracker")
+        def authorized = auth0Metadata.isAuthorized("my-app1", "demo")
 
         then:
         1 * springSessionJwt.get() >> metadata

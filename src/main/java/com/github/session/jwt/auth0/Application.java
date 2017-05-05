@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Permissions {
-    private List<Permission> permissions;
+public class Application {
+    private String name;
+    private List<Environment> environments;
 }

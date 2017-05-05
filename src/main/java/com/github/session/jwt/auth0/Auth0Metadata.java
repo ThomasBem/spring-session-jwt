@@ -34,27 +34,37 @@ public class Auth0Metadata {
         }
     }
 
-    public List<Permission> getPermissions() {
+    public boolean isAuthorized(String appName, String environment) {
+        List<Application> applications = getApplications();
+        if (applications.size() == 0) {
+            return false;
+        }
+
+        Optional<Application> application = applications.stream().filter(app -> app.getName().toLowerCase().equals(appName)).findFirst();
+        if(application.isPresent()) {
+            Application approvedApplication = application.get();
+            Optional<Environment> approvedEnvironment = approvedApplication.getEnvironments().stream().filter(env -> env.getName().toLowerCase().equals(environment)).findFirst();
+            if(approvedEnvironment.isPresent()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public List<Application> getApplications() {
         Optional<String> metadata = get();
         if (metadata.isPresent()) {
             try {
-                Permissions permissions = new ObjectMapper().readValue(metadata.get(), Permissions.class);
-                return permissions.getPermissions();
+                Applications applications = new ObjectMapper().readValue(metadata.get(), Applications.class);
+                return applications.getApplications();
             } catch (IOException e) {
-                log.error("Unable to parse permissions metadata", e);
+                log.error("Unable to parse applications metadata", e);
             }
         }
 
         return Collections.emptyList();
-    }
-
-    public boolean isAuthorized(String appName) {
-        List<Permission> permissions = getPermissions();
-        if (permissions.size() == 0) {
-            return false;
-        }
-
-        Optional<Permission> permissionAppName = permissions.stream().filter(permission -> permission.getApp().toLowerCase().equals(appName)).findFirst();
-        return permissionAppName.isPresent();
     }
 }

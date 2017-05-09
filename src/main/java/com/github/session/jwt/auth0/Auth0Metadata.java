@@ -43,7 +43,7 @@ public class Auth0Metadata {
         Optional<Application> application = applications.stream().filter(app -> app.getName().toLowerCase().equals(appName)).findFirst();
         if(application.isPresent()) {
             Application approvedApplication = application.get();
-            Optional<Environment> approvedEnvironment = approvedApplication.getEnvironments().stream().filter(env -> env.getName().toLowerCase().equals(environment)).findFirst();
+            Optional<Environment> approvedEnvironment = approvedApplication.getEnvironments().stream().filter(env -> env.getEnvironment().toLowerCase().equals(environment)).findFirst();
             if(approvedEnvironment.isPresent()) {
                 return true;
             } else {

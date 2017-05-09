@@ -9,7 +9,7 @@ class Auth0MetadataSpec extends Specification {
 
     void setup() {
         def metadata = new HashMap()
-        metadata.put("app_metadata", "{roles=[USER_ROLE], applications=[{name=my-app1, environments=[{name=development, claims={role=user, company=my-company1, organisation=my-org1}}, {name=demo, claims={role=user, company=my-company1, organisation=my-org1}}, {name=production, claims={role=user, company=my-company1, organisation=my-org1}}]}, {name=my-app2, environments=[{name=development, claims={role=user, company=my-company2, organisation=my-org2}}, {name=demo, claims={role=user, company=my-company2, organisation=my-org2}}, {name=production, claims={role=user, company=my-company2, organisation=my-org2}}]}]}")
+        metadata.put("app_metadata", "{roles=[USER_ROLE], applications=[{name=my-app1, environments=[{environment=development, claims={role=user, company=my-company1, organisation=my-org1}}, {environment=demo, claims={role=user, company=my-company1, organisation=my-org1}}, {environment=production, claims={role=user, company=my-company1, organisation=my-org1}}]}, {name=my-app2, environments=[{environment=development, claims={role=user, company=my-company2, organisation=my-org2}}, {environment=demo, claims={role=user, company=my-company2, organisation=my-org2}}, {environment=production, claims={role=user, company=my-company2, organisation=my-org2}}]}]}")
         springSessionJwt = Mock(SpringSessionJwt) {
             get() >> metadata
         }

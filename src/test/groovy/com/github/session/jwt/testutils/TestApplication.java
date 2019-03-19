@@ -1,6 +1,7 @@
 package com.github.session.jwt.testutils;
 
 import com.github.session.jwt.annotations.EnableSpringSessionJwt;
+import com.github.session.jwt.config.SpringSessionConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -26,6 +27,19 @@ public class TestApplication {
 
     @Bean
     public HttpServletRequest httpServletRequest() {
+        return new MockHttpServletRequest();
+    }
+
+    @Bean
+    public SpringSessionConfig springSessionConfig() { return new SpringSessionConfig(); }
+
+    @Bean
+    public HttpSession session() {
+        return new MockHttpSession();
+    }
+
+    @Bean
+    public HttpServletRequest request() {
         return new MockHttpServletRequest();
     }
 }

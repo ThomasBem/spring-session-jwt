@@ -7,10 +7,21 @@ It is created to easily be used in combination with [auth0](https://auth0.com/).
 
 ## Installation
 
+For Spring-Boot 1.X use:
+
 Gradle
 ```
 compile('com.github.session.jwt:spring-session-jwt:2.0.1')
 ```
+
+For Spring-Boot 2.X use:
+
+@Gradle
+ ```
+ compile('com.github.session.jwt:spring-session-jwt:3.0.0')
+ ```
+ 
+ Going forward updates will only be made for 2.X compatibility.
 
 ```
 repositories {

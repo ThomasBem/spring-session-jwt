@@ -23,13 +23,6 @@ For Spring-Boot 2.X use:
  
  Going forward updates will only be made for 2.X compatibility.
 
-```
-repositories {
-    maven {
-        url  "http://dl.bintray.com/thomasbem/maven"
-    }
-}
-```
 
 ## Usage
 
